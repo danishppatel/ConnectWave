@@ -17,7 +17,6 @@ import IconButton from "./IconButton";
 import sunTheme from '../assets/sun_theme.png';
 import moonTheme from '../assets/moon_theme.png';
 import logoutIcon from '../assets/logout.png'
-import path from "path";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -198,7 +197,7 @@ function Navbar() {
   }, []);
 
   return (
-    <>
+    <div style={{position:"sticky", top:"0", zIndex:"1000"}}>
       <EuiHeader
         style={{ minHeight: "8vh" }}
         theme="dark"
@@ -212,7 +211,7 @@ function Navbar() {
           },
         ]}
       />
-    </>
+    </div>
   );
 }
 

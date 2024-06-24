@@ -13,6 +13,7 @@ import {
   EuiFlexGroup,
   EuiFlexItem,
   EuiPanel,
+  EuiSpacer,
 } from "@elastic/eui";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -239,6 +240,7 @@ export default function MyMeetings() {
       {showEditFlyout && (
         <EditFlyOut closeFlyout={closeEditFlyout} meeting={editMeeting!} />
       )}
+      <EuiSpacer/>
     </div>
   );
 }

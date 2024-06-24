@@ -5,7 +5,7 @@ import { MeetingType, Page } from '../utils/types';
 import { getDocs, query } from 'firebase/firestore';
 import { meetingsRef } from '../utils/FirebaseConfig';
 import Navbar from '../components/Navbar';
-import { EuiBadge, EuiBasicTable, EuiButtonIcon, EuiCopy, EuiFlexGroup, EuiFlexItem, EuiPanel } from '@elastic/eui';
+import { EuiBadge, EuiBasicTable, EuiButtonIcon, EuiCopy, EuiFlexGroup, EuiFlexItem, EuiPanel, EuiSpacer } from '@elastic/eui';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 
@@ -176,6 +176,7 @@ export default function Meeting() {
         </EuiPanel>
       </EuiFlexItem>
     </EuiFlexGroup>
+    <EuiSpacer/>
   </div>
   )
 }

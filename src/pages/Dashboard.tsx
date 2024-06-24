@@ -21,6 +21,7 @@ function Dashboard() {
         }}
         >
         <Navbar/>
+        <div style={{ overflowY: "auto", flex: "1", display:"flex", marginBottom:"2rem" }}>
         <EuiFlexGroup justifyContent="center" alignItems="center" style={{margin:"5vh 10vw"}}>
           <EuiFlexItem>
             <EuiCard 
@@ -49,6 +50,7 @@ function Dashboard() {
             paddingSize="xl"/>
           </EuiFlexItem>
         </EuiFlexGroup>
+        </div>
       </div>
     </>
   );
