@@ -14,7 +14,7 @@ export const getCreateMeetingBreadCrumbs = (
   ): Array<BreadCrumbsType> => [
     {
       text: "Dashboard",
-      href: "#",
+      href: "",
       onClick: () => {
         navigate("/");
       },
@@ -29,14 +29,14 @@ export const getCreateMeetingBreadCrumbs = (
   ): Array<BreadCrumbsType> => [
     {
       text: "Dashboard",
-      href: "#",
+      href: "",
       onClick: () => {
         navigate("/");
       },
     },
     {
       text: "Create Meeting",
-      href: "#",
+      href: "",
       onClick: () => {
         navigate("/create");
       },
@@ -51,14 +51,14 @@ export const getCreateMeetingBreadCrumbs = (
   ): Array<BreadCrumbsType> => [
     {
       text: "Dashboard",
-      href: "#",
+      href: "",
       onClick: () => {
         navigate("/");
       },
     },
     {
       text: "Create Meeting",
-      href: "#",
+      href: "",
       onClick: () => {
         navigate("/create");
       },
@@ -74,7 +74,7 @@ export const getCreateMeetingBreadCrumbs = (
   ): Array<BreadCrumbsType> => [
     {
       text: "Dashboard",
-      href: "#",
+      href: "",
       onClick: () => {
         navigate("/");
       },
@@ -89,7 +89,7 @@ export const getCreateMeetingBreadCrumbs = (
   ): Array<BreadCrumbsType> => [
     {
       text: "Dashboard",
-      href: "#",
+      href: "",
       onClick: () => {
         navigate("/");
       },

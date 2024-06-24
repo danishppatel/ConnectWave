@@ -158,6 +158,8 @@ export default function JoinMeeting() {
       zegoInstanceRef.current.destroy(); 
       zegoInstanceRef.current = null;
     }
+
+    window.location.reload();
     navigate("/meetings"); 
   };
 
