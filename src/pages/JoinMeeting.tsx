@@ -7,6 +7,7 @@ import { getDocs, query, where } from "firebase/firestore";
 import moment from "moment";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import { generateMeetingID } from "../utils/generateMeetingId";
+import { ZegoSuperBoardManager } from "zego-superboard-web";
 
 export default function JoinMeeting() {
   const params = useParams();
@@ -17,15 +18,17 @@ export default function JoinMeeting() {
   const [userLoaded, setUserLoaded] = useState(false);
   const zegoInstanceRef = useRef<any>();
 
-  onAuthStateChanged(firebaseAuth, (currentUser) => {
-    if (currentUser) {
-      setUser(currentUser);
-    }
-    setUserLoaded(true);
-  });
-  
-  console.log(zegoInstanceRef,"h")
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(firebaseAuth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      }
+      setUserLoaded(true);
+    });
 
+    return () => unsubscribe(); 
+  }, []);
+  
   useEffect(() => {
     const getMeetingData = async () => {
       if (params.id && userLoaded) {
@@ -99,38 +102,72 @@ export default function JoinMeeting() {
     getMeetingData();
   }, [params.id, user, userLoaded, createToast, navigate]);
 
+  // Assuming this is inside your JoinMeeting component
+  const handleJoinMeeting = async (element: any) => {
 
- // Assuming this is inside your JoinMeeting component
-
- const handleJoinMeeting = (element: any) => {
-    if (!zegoInstanceRef.current) {
-      const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
-        parseInt(process.env.REACT_APP_ZEGOCLOUD_APP_ID!),
-        process.env.REACT_APP_ZEGOCLOUD_SERVER_SECRET as string,
-        params.id as string,
-        user?.uid ? user.uid : generateMeetingID(),
-        user?.displayName ? user.displayName : generateMeetingID()
-      );
-
-      zegoInstanceRef.current = ZegoUIKitPrebuilt.create(kitToken);
+    if(zegoInstanceRef.current){
+      zegoInstanceRef.current.destroy(); 
     }
 
-    if (zegoInstanceRef.current) {
-      zegoInstanceRef.current.joinRoom({
-        container: element,
-        maxUsers: 50,
-        sharedLinks: [
-          {
-            name: "Personal link",
-            url: window.location.origin,
-          },
-        ],
-        scenario: {
-          mode: ZegoUIKitPrebuilt.VideoConference,
+
+    const token = ZegoUIKitPrebuilt.generateKitTokenForTest(
+      parseInt(process.env.REACT_APP_ZEGOCLOUD_APP_ID!),
+      process.env.REACT_APP_ZEGOCLOUD_SERVER_SECRET as string,
+      params.id as string,
+      user?.uid ? user.uid : generateMeetingID(),
+      user?.displayName ? user.displayName : generateMeetingID()
+    );
+
+    // Create new instance
+    const zp = ZegoUIKitPrebuilt.create(token);
+    zegoInstanceRef.current = zp;
+
+
+    zp.addPlugins({ ZegoSuperBoardManager });
+
+    // Join room with the new instance
+    zp.joinRoom({
+      container: element,
+      maxUsers: 50,
+      sharedLinks: [
+        {
+          name: "Personal link",
+          url: window.location.origin,
         },
-      });
+      ],
+      scenario: {
+        mode: ZegoUIKitPrebuilt.VideoConference,
+      },
+      layout: "Auto",
+      onJoinRoom() {
+        console.log("Joined the room successfully.");
+      },
+      onLeaveRoom() {
+        console.log("Leave the room successfully.");
+        cleanupAndNavigate();
+        
+      },
+      whiteboardConfig: {
+        showAddImageButton: true,
+      },
+    });
+  };
+
+  const cleanupAndNavigate = () => {
+    if (zegoInstanceRef.current) {
+      zegoInstanceRef.current.destroy(); 
+      zegoInstanceRef.current = null;
     }
-  };  
+    navigate("/meetings"); 
+  };
+
+  useEffect(() => {
+    return () => {
+      if (zegoInstanceRef.current) {
+        zegoInstanceRef.current.destroy(); 
+      }
+    };
+  }, []);
 
   return isAllowed ? (
     <div
